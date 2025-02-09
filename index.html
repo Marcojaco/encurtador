@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isso é encurtador de links, coloca o teu ai em baixo</title>
+    <h2>segue lá no insta: j4cob_28</h2>
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #shortenedUrl {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+            text-align: center;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Isso é encurtador de links, coloca o teu ai em baixo</h1>
+    <input type="text" id="originalUrl" placeholder="Insira o link aqui">
+    <button onclick="encurtarLink()">Encurtar Link</button>
+    <div id="shortenedUrl"></div>
+
+    <script>
+        const linksEncurtados = JSON.parse(localStorage.getItem("links")) || {};
+
+        const params = new URLSearchParams(window.location.search);
+        const codigo = params.get("l");
+
+        if (codigo) {
+            if (linksEncurtados[codigo]) {
+                window.location.href = linksEncurtados[codigo];
+            } else {
+                alert("Link encurtado não encontrado!");
+            }
+        }
+
+        function encurtarLink() {
+            const originalUrl = document.getElementById("originalUrl").value;
+
+            if (!originalUrl) {
+                alert("Por favor, insira um link válido.");
+                return;
+            }
+
+            const codigo = Math.random().toString(36).substring(2, 8);
+            linksEncurtados[codigo] = originalUrl;
+            localStorage.setItem("links", JSON.stringify(linksEncurtados));
+
+            const shortUrl = `${window.location.origin}${window.location.pathname}?l=${codigo}`;
+            document.getElementById("shortenedUrl").innerHTML = 
+                `Seu link encurtado: <a href="${shortUrl}" target="_blank">${shortUrl}</a>`;
+        }
+    </script>
+</body>
+</html>
